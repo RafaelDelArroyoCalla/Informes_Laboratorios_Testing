@@ -16,21 +16,19 @@ search_box.send_keys("Selenium IDE")
 search_box.send_keys(Keys.RETURN)
 time.sleep(3)  # Espera a que se carguen bien los resultados
 
-results = driver.find_elements(By.CSS_SELECTOR, "a")
+# Obtener el primer enlace
+first_result = driver.find_element(By.CSS_SELECTOR, "li.b_algo h2 a")
 
+# Imprimir el primer enlace para verificar que es el oficial
+print("Primer enlace encontrado:", first_result.get_attribute("href"))
 
-print("Enlaces encontrados:")
-for result in results:
-    href = result.get_attribute("href")
-    if href:
-        print(href)
+# Comando personalizado: Verificar que el primer enlace sea el sitio oficial de Selenium IDE
+expected_url = "https://www.selenium.dev/selenium-ide/"
+actual_url = first_result.get_attribute("href")
 
-
-found = any("selenium.dev/selenium-ide" in result.get_attribute("href") if result.get_attribute("href") else False for result in results)
-
-if found:
-    print("Sitio oficial encontrado.")
+if expected_url in actual_url:
+    print("El sitio oficial de Selenium IDE aparece como el primer resultado.")
 else:
-    print("Sitio oficial NO encontrado.")
+    print("El sitio oficial NO aparece como el primer resultado.")
 
 driver.quit()
